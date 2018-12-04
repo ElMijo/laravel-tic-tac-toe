@@ -2,23 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Match;
 use Illuminate\Support\Facades\Input;
+use App\Transformer\MatchTransformer;
+use League\Fractal\Manager  as TransformManager;
+use League\Fractal\Resource\Collection as TransformCollection;
 
-class MatchController extends Controller {
+class MatchController extends Controller
+{
+    /**
+     * @var \App\Transformer\MatchTransformer
+     */
+    private $transformer;
 
-    public function index() {
+    public function __construct(MatchTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
+    public function index()
+    {
         return view('index');
     }
 
     /**
      * Returns a list of matches
      *
-     * TODO it's mocked, make this work :)
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function matches() {
-        return response()->json($this->fakeMatches());
+    public function matches()
+    {
+        $manager = new TransformManager();
+        $resource = new TransformCollection(Match::all(), $this->transformer);
+        return response()->json($manager->createData($resource)->toArray()["data"]);
     }
 
     /**
