@@ -64,13 +64,13 @@ class MatchController extends Controller
      */
     public function create()
     {
-        $status = 200;
-        $match = $this->transformer->transform(Match::create([
-            'next' => '0',
-            'winner' => '0',
-            'combination' => '0',
-        ]));
-        return response()->json($match, $status);
+        try {
+            Match::create(['next' => '0', 'winner' => '0', 'combination' => '0']);
+        } catch (\Exception $e) {
+
+        }
+
+        return response()->json($this->matchesTransformed()->toArray()["data"]);
     }
 
     /**
@@ -81,8 +81,6 @@ class MatchController extends Controller
      */
     public function delete($id)
     {
-        $status = 200;
-
         try {
             Match::findOrFail($id)->delete();
         } catch (ModelNotFoundException $e) {

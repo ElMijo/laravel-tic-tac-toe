@@ -85,11 +85,13 @@ class MatchTest extends TestCase
     {
         $this->json('POST', '/api/match')
             ->assertSuccessful()
-            ->assertJsonFragment([
-                'next' => '0',
-                'winner' => '0',
-                'combination' => '0',
-                'board' => [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ->assertJson([
+                [
+                    'next' => '0',
+                    'winner' => '0',
+                    'combination' => '0',
+                    'board' => [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ]
             ])
         ;
     }
