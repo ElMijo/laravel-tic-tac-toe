@@ -95,6 +95,35 @@ class MatchTest extends TestCase
     }
 
     /**
+     * Test the matches action when match not found.
+     *
+     * @test
+     */
+    public function deleteMatchNotFound()
+    {
+        $result = $this->getMatchesList();
+        $this->json('DELETE', '/api/match/any')
+            ->assertSuccessful()
+            ->assertExactJson($result);
+        ;
+    }
+
+    /**
+     * Test the matches action when exist matches.
+     *
+     * @test
+     */
+    public function deleteMatch()
+    {
+        $match = factory(\App\Match::class)->create();
+        $result = $this->getMatchesList();
+        $this->json('DELETE', '/api/match/'.$match->id)
+            ->assertSuccessful()
+            ->assertExactJson($result);
+        ;
+    }
+
+    /**
      * Create a return a list of matches.
      *
      * @return array

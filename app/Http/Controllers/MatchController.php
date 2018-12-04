@@ -33,9 +33,7 @@ class MatchController extends Controller
      */
     public function matches()
     {
-        $manager = new TransformManager();
-        $resource = new TransformCollection(Match::all(), $this->transformer);
-        return response()->json($manager->createData($resource)->toArray()["data"]);
+        return response()->json($this->matchesTransformed()->toArray()["data"]);
     }
 
     /**
@@ -76,6 +74,24 @@ class MatchController extends Controller
     }
 
     /**
+     * Deletes the match and returns the new list of matches
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete($id)
+    {
+        $status = 200;
+
+        try {
+            Match::findOrFail($id)->delete();
+        } catch (ModelNotFoundException $e) {
+
+        }
+        return response()->json($this->matchesTransformed()->toArray()["data"]);
+    }
+
+    /**
      * Makes a move in a match
      *
      * TODO it's mocked, make this work :)
@@ -102,18 +118,9 @@ class MatchController extends Controller
         ]);
     }
 
-    /**
-     * Deletes the match and returns the new list of matches
-     *
-     * TODO it's mocked, make this work :)
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete($id) {
-        return response()->json($this->fakeMatches()->filter(function($match) use($id){
-            return $match['id'] != $id;
-        })->values());
+    private function matchesTransformed()
+    {
+        return (new TransformManager())->createData(new TransformCollection(Match::all(), $this->transformer));
     }
 
     /**
