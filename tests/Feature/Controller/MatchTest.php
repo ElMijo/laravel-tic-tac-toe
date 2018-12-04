@@ -77,6 +77,24 @@ class MatchTest extends TestCase
     }
 
     /**
+     * Test the response when create a match.
+     *
+     * @test
+     */
+    public function createMatch()
+    {
+        $this->json('POST', '/api/match')
+            ->assertSuccessful()
+            ->assertJsonFragment([
+                'next' => '0',
+                'winner' => '0',
+                'combination' => '0',
+                'board' => [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ])
+        ;
+    }
+
+    /**
      * Create a return a list of matches.
      *
      * @return array

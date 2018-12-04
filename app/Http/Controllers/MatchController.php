@@ -41,12 +41,11 @@ class MatchController extends Controller
     /**
      * Returns the state of a single match
      *
-     * TODO it's mocked, make this work :)
-     *
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function match($id) {
+    public function match($id)
+    {
         $status = 200;
         $match = null;
         try {
@@ -55,6 +54,24 @@ class MatchController extends Controller
             $status = 404;
         }
 
+        return response()->json($match, $status);
+    }
+
+    /**
+     * Creates a new match and returns the new list of matches
+     *
+     * TODO it's mocked, make this work :)
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function create()
+    {
+        $status = 200;
+        $match = $this->transformer->transform(Match::create([
+            'next' => '0',
+            'winner' => '0',
+            'combination' => '0',
+        ]));
         return response()->json($match, $status);
     }
 
@@ -83,17 +100,6 @@ class MatchController extends Controller
             'winner' => 0,
             'board' => $board,
         ]);
-    }
-
-    /**
-     * Creates a new match and returns the new list of matches
-     *
-     * TODO it's mocked, make this work :)
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function create() {
-        return response()->json($this->fakeMatches());
     }
 
     /**
