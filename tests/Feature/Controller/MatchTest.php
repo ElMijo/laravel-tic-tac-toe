@@ -42,6 +42,41 @@ class MatchTest extends TestCase
     }
 
     /**
+     * Test the response when the match not exists.
+     *
+     * @test
+     */
+    public function getNotFoundMatch()
+    {
+        $this->json('GET', '/api/match/any')
+            ->assertNotFound()
+            ->assertExactJson([])
+        ;
+    }
+
+    /**
+     * Test the response when the match found.
+     *
+     * @test
+     */
+    public function getMatch()
+    {
+        $match = factory(\App\Match::class)->create();
+
+        $this->json('GET', '/api/match/'.$match->id)
+            ->assertSuccessful()
+            ->assertExactJson([
+                'id' => $match->id,
+                'name' => 'Match'.$match->id,
+                'next' => $match->next,
+                'winner' => $match->winner,
+                'combination' => $match->combination,
+                'board' => [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ])
+        ;
+    }
+
+    /**
      * Create a return a list of matches.
      *
      * @return array

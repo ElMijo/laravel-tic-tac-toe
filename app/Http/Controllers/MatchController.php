@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use App\Transformer\MatchTransformer;
 use League\Fractal\Manager  as TransformManager;
 use League\Fractal\Resource\Collection as TransformCollection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MatchController extends Controller
 {
@@ -46,17 +47,15 @@ class MatchController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function match($id) {
-        return response()->json([
-            'id' => $id,
-            'name' => 'Match'.$id,
-            'next' => 2,
-            'winner' => 0,
-            'board' => [
-                1, 0, 2,
-                0, 1, 2,
-                0, 0, 0,
-            ],
-        ]);
+        $status = 200;
+        $match = null;
+        try {
+            $match = $this->transformer->transform(Match::findOrFail($id));
+        } catch (ModelNotFoundException $e) {
+            $status = 404;
+        }
+
+        return response()->json($match, $status);
     }
 
     /**
