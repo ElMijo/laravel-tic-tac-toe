@@ -11,9 +11,12 @@
 |
 */
 
-Route::view('/', 'index');
+Route::get('/login', 'Auth\LoginController@showLoginForm');
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::view('/', 'index')->middleware('auth');
 
-Route::prefix('api')->group(function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
     Route::get('match', 'MatchController@matches')->name('matches');
     Route::get('match/{id}', 'MatchController@match')->name('match');
     Route::put('match/{id}', 'MatchController@move')->name('move');
