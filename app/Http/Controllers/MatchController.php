@@ -77,7 +77,6 @@ class MatchController extends Controller
         try {
             Match::create(['next' => "1", 'winner' => '0', 'combination' => '0']);
         } catch (\Exception $e) {
-
         }
 
         return response()->json($this->matchesTransformed()->toArray()["data"]);
@@ -96,7 +95,6 @@ class MatchController extends Controller
             Move::where("match_id", "=", $id)->delete();
             $match->delete();
         } catch (ModelNotFoundException $e) {
-
         }
         return response()->json($this->matchesTransformed()->toArray()["data"]);
     }
@@ -118,7 +116,7 @@ class MatchController extends Controller
             $match = Match::findOrFail($id);
             $position = strval(Input::get('position'));
 
-            if($this->service->isGameOver($match)) {
+            if ($this->service->isGameOver($match)) {
                 throw new MatchException("The game is over", 400);
             }
 
@@ -126,7 +124,7 @@ class MatchController extends Controller
                 throw new MatchException("The position was already played", 400);
             }
 
-            if(!$this->service->isUserTurn($match, $user)) {
+            if (!$this->service->isUserTurn($match, $user)) {
                 throw new MatchException("it's not your turn", 400);
             }
 

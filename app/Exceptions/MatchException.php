@@ -4,4 +4,6 @@ namespace App\Exceptions;
 
 use RuntimeException;
 
-class MatchException extends RuntimeException {}
+class MatchException extends RuntimeException
+{
+}

@@ -22,7 +22,7 @@ class MatchService
         return count($this->getPositionsAvailable($match)) == 0;
     }
 
-    public function getUserMove(\App\Match $match,\App\User $user)
+    public function getUserMove(\App\Match $match, \App\User $user)
     {
         $moves = $match->moves()->get();
         if (!$move = $moves->where("user_id", "=", $user->id)->pluck('move')->first()) {
