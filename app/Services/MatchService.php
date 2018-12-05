@@ -54,7 +54,6 @@ class MatchService
                 $match->combination = strval($key + 1);
                 break;
             }
-
         }
     }
 
