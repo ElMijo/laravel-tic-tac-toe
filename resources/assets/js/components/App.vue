@@ -80,6 +80,9 @@
                 api.move(data).then(({data}) => {
                     this.match = data;
                     that.loading = false;
+                }).catch(error => {
+                    that.loading = false;
+                    alert(error.response.data.message);
                 });
             },
             createMatch() {

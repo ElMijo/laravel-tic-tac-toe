@@ -1,0 +1,35 @@
+language: php
+
+php:
+    - '7.1'
+env:
+    matrix:
+    - TEST_SUITE=Integration Test
+
+stages:
+    - code quality
+    - unit test
+    - test
+
+before_script:
+    - ./setup
+    - .travis/before_script.sh
+
+script:
+    - if [ $TEST_SUITE == "Integration Test" ]; then vendor/bin/phpunit --testsuite "Feature"; fi
+jobs:
+    include:
+        - stage: code quality
+          php: 7.1
+          env: TEST_SUITE=Code Quality
+          before_script: ./setup && .travis/before_script.sh
+          script: vendor/bin/phpcs . && vendor/bin/phpmd app,config,routes text phpmd.xml
+        - stage: unit test
+          php: 7.1
+          env: TEST_SUITE=Unit Test
+          before_script: ./setup && .travis/before_script.sh
+          script: vendor/bin/phpunit --testsuite "Unit"
+
+cache:
+    directories:
+        - $HOME/.composer/cache/files
