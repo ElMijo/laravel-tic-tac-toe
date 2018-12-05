@@ -24,6 +24,8 @@ class MatchService
 
     public function getUserMove(\App\Match $match, \App\User $user)
     {
+        // REVIEW #11: 🙁 only the last move is needed but all are retrieved by the query.
+        // Using $match->moves directly could improve the performance avoiding repeated queries
         $moves = $match->moves()->get();
         if (!$move = $moves->where("user_id", "=", $user->id)->pluck('move')->first()) {
             $move = $moves->where("move", "=", 1)->count() > 0 ? 2 : 1;
@@ -38,6 +40,7 @@ class MatchService
 
     /**
      * Process board data to determinate if exists a winner.
+     * REVIEW #12: 🙂 Good implementation of the algorithm
      */
     public function processWinner(\App\Match &$match)
     {
@@ -51,6 +54,7 @@ class MatchService
                 $match->combination = strval($key + 1);
                 break;
             }
+
         }
     }
 
