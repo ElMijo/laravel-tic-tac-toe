@@ -47477,6 +47477,9 @@ var MATCHES = 'matches',
 
                 _this3.match = data;
                 that.loading = false;
+            }).catch(function (error) {
+                that.loading = false;
+                alert(error.response.data.message);
             });
         },
         createMatch: function createMatch() {
