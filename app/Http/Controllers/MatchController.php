@@ -65,7 +65,7 @@ class MatchController extends Controller
     public function create()
     {
         try {
-            Match::create(['next' => '0', 'winner' => '0', 'combination' => '0']);
+            Match::create(['next' => random_int(1, 2), 'winner' => '0', 'combination' => '0']);
         } catch (\Exception $e) {
 
         }

@@ -21,7 +21,7 @@ class MatchTransformer extends \League\Fractal\TransformerAbstract
         return [
             'id' => $match->id,
             'name' => 'Match'.$match->id,
-            'next' => $match->next,
+            'next' => intval($match->next),
             'winner' => $match->winner,
             'combination' => $match->combination,
             'board' => $this->makeBoard($match),
@@ -32,7 +32,7 @@ class MatchTransformer extends \League\Fractal\TransformerAbstract
      * Make a board using match moves.
      *
      * @param  \App\Match  $match
-     * 
+     *
      * @return array
      */
     public function makeBoard(Match $match)
