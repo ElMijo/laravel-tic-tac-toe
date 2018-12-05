@@ -22,27 +22,9 @@ class MatchTransformer extends \League\Fractal\TransformerAbstract
             'id' => $match->id,
             'name' => 'Match'.$match->id,
             'next' => intval($match->next),
-            'winner' => $match->winner,
+            'winner' => intval($match->winner),
             'combination' => $match->combination,
-            'board' => $this->makeBoard($match),
+            'board' => $match->board(),
         ];
-    }
-
-    /**
-     * Make a board using match moves.
-     *
-     * @param  \App\Match  $match
-     *
-     * @return array
-     */
-    public function makeBoard(Match $match)
-    {
-        $sorted = $match->moves()->get()->sortBy('position');
-        $keys = $sorted->pluck('position')->all();
-        $values = $sorted->pluck('move')->all();
-        return array_replace(
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            array_combine($keys, $values)
-        );
     }
 }

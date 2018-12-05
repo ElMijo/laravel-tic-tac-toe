@@ -28,5 +28,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(\App\Transformer\MatchTransformer::class, 'app.transformer.match');
+
+        $this->app->singleton(\App\Services\MatchService::class, function ($app) {
+            return new \App\Services\MatchService();
+        });
+
+        $this->app->alias(\App\Services\MatchService::class, 'app.services.match');
     }
 }
